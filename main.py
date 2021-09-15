@@ -21,10 +21,12 @@ try:
 except:
 	print('no file')
 	exit()
+lb = opxl.Workbook()
+lbsheet = lb.active
 sheet = wb.active
 getInfo(sheet)
 
-for var in range(1,sheet.max_row+1):
-	logbook = "date:{date}|ACCMS|project:{project}|".format(date = sheet[var][EndDate].value , project = sheet[var][CMProject].value)
-	print(logbook)
-
+lbsheet.title = sheet[2][UserSign].value
+#lb.save("logbook.xlsx")
+#print("date is {}".format(sheet[3][EndDate].value))
+print(sheet[3][EndDate].value.year)
