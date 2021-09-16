@@ -1,4 +1,11 @@
 import openpyxl as opxl
+from rich.table import Table
+from rich.console import Console
+from datetime import datetime
+table = Table(title = "logbook")
+table.add_column("data")
+table.add_column("User Sign")
+table.add_column("CM Project")
 
 def getInfo(data):
 	global ToW, UserSign,EndDate,UsedMHR,CMProject
@@ -17,16 +24,24 @@ def getInfo(data):
 
 
 try:
-	wb = opxl.open('test3.xlsx')
+	apn1225 = opxl.open('test3.xlsx')
 except:
 	print('no file')
 	exit()
-lb = opxl.Workbook()
-lbsheet = lb.active
-sheet = wb.active
-getInfo(sheet)
+logbook = opxl.Workbook()
+lbsheet = logbook.active
+sheet1225 = apn1225.active
+getInfo(sheet1225)
 
-lbsheet.title = sheet[2][UserSign].value
-#lb.save("logbook.xlsx")
-#print("date is {}".format(sheet[3][EndDate].value))
-print(sheet[3][EndDate].value.year)
+
+
+lbsheet.title = sheet1225[2][UserSign].value
+
+for var in range(3,sheet1225.max_row):
+	date = sheet1225[var][EndDate]
+#	print(date.value.strftime("%d:%m"))
+	table.add_row(sheet1225[var][EndDate].value.strftime("%d:%m:%y"), sheet1225[var][UserSign].value, sheet1225[var][CMProject].value)
+
+
+console = Console()
+console.print(table)
