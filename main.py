@@ -2,6 +2,9 @@ import openpyxl as opxl
 from rich.table import Table
 from rich.console import Console
 from datetime import datetime
+
+
+
 table = Table(title = "logbook")
 table.add_column("data")
 table.add_column("User Sign")
@@ -22,6 +25,12 @@ def getInfo(data):
 			CMProject = var
 
 
+def clearEmpty(data, column):
+	for var in range(1,data.max_row):
+		if data[var][column].value == "":
+			data.delete_rows(var,var)
+			var = var-1
+
 
 try:
 	apn1225 = opxl.open('test3.xlsx')
@@ -37,10 +46,14 @@ getInfo(sheet1225)
 
 lbsheet.title = sheet1225[2][UserSign].value
 
+#clearEmpty(sheet1225, CMProject)
+
+#print(sheet1225[3][CMProject])
+
 for var in range(3,sheet1225.max_row):
 	date = sheet1225[var][EndDate]
 #	print(date.value.strftime("%d:%m"))
-	table.add_row(sheet1225[var][EndDate].value.strftime("%d:%m:%y"), sheet1225[var][UserSign].value, sheet1225[var][CMProject].value)
+	table.add_row(sheet1225[var][EndDate].value.strftime(, sheet1225[var][UserSign].value, sheet1225[var][CMProject].value)
 
 
 console = Console()
