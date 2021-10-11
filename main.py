@@ -53,7 +53,7 @@ lbsheet.title = sheet1225[2][UserSign].value
 for var in range(3,sheet1225.max_row):
 	date = sheet1225[var][EndDate]
 #	print(date.value.strftime("%d:%m"))
-	table.add_row(sheet1225[var][EndDate].value.strftime(, sheet1225[var][UserSign].value, sheet1225[var][CMProject].value)
+	table.add_row(sheet1225[var][EndDate].value.strftime('%d:%m'), sheet1225[var][UserSign].value, sheet1225[var][CMProject].value)
 
 
 console = Console()
