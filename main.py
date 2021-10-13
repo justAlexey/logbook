@@ -8,7 +8,7 @@ lb.ws1225 = lb.clear(lb.ws1225)
 for i in range(2,lb.ws1225.max_row):
     data = lb.formateRow(i)
     if data == None:
-        break
+        continue
     lb.writeRow(lb.ws1225[i][lb.sbt].value, data)
 lb.save()
 
