@@ -54,7 +54,7 @@ class Logbook:
         row1225 = self.ws1225[row]
         row1328 = self.getRow1328(row1225[self.cmproject])
         usedTime = self.getTime(row1225[self.timeDuration])
-        task = self.getTaskType()
+        task = self.getTaskType(row1225[self.tow].value)
         data = [
                 row1225[self.date].value.strftime('%d.%m.%y'),    # date
                 "ACCMS",    # location "ACCMS"
@@ -105,15 +105,15 @@ class Logbook:
         return f"{hours}:{minutes}"
 
 
-    def getTaskType(self):      # get task type from apn1225, 1328 and 1498
+    def getTaskType(self, tow):      # get task type from apn1225, 1328 and 1498
         return {
-            "fot":"",
+            "fot":"X",
             "sgh":"",
             "r/i":"",
-            "ts":"",
+            "ts":"X",
             "mod":"",
-            "rep":"",
-            "insp":"",
+            "rep":"X" if tow == "AD_CMS" else "",
+            "insp":"X",
         }
 
 
