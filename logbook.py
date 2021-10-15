@@ -89,7 +89,7 @@ class Logbook:
             ws.title = sheet
         else:
             ws = self.wblb[sheet]
-        print("sheet is {}, data is {}".format(sheet,data))
+        #print("sheet is {}, data is {}".format(sheet,data))
         ws.append(data)
 
 
