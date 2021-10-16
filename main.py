@@ -18,7 +18,7 @@ progress = IncrementalBar("create logbook...", max = lb.ws1225.max_row-2)
 for i in range(2,lb.ws1225.max_row):
     data = lb.formateRow(i)
     if data == None:
-#        progress.next()
+        progress.next()
         continue
     lb.writeRow(lb.ws1225[i][lb.sbt].value, data)
 
