@@ -5,6 +5,8 @@ from progress.bar import IncrementalBar
 
 import logbook
 
+print("start")
+s = time.monotonic()
 lb = logbook.Logbook()
 # print("clear 1225")
 dif = time.monotonic()
@@ -20,4 +22,4 @@ for i in range(2,lb.ws1225.max_row):
     progress.next()
 lb.save()
 progress.finish()
-
+print(f'used time - {time.monotonic()-s}')
