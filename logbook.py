@@ -70,9 +70,9 @@ class Logbook:
                 task["rep"],    # task type: REP
                 task["insp"],    # task type: INSP
                     # type of activity: Training
-                    # type of activity: Perform
+                "X",    # type of activity: Perform
                     # type of activity: Suppervise
-                    # type of activity: CRS
+                self.getCRS(row1225[self.cmproject].value),    # type of activity: CRS
                 row1328[self.ata].value,    # ATA
                     # Operation performed
                 usedTime,    # Time duration
@@ -115,6 +115,11 @@ class Logbook:
             "rep":"X" if tow == "AD_CMS" else "",
             "insp":"X",
         }
+
+    def getCRS(self, cm):
+        
+        return ""
+
 
 
     def save(self):     # save logbook 
