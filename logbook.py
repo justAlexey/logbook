@@ -8,9 +8,9 @@ class Logbook:
     def __init__(self):
         # try to open 'APN'.xls
         try:
-            self.wb1225 = opxl.open("1225.xlsx")
-            self.wb1328 = opxl.open("1328.xlsx")
-            self.wb1498 = opxl.open("1498.xlsx")
+            self.wb1225 = opxl.open("excel/1225.xlsx")
+            self.wb1328 = opxl.open("excel/1328.xlsx")
+            self.wb1498 = opxl.open("excel/1498.xlsx")
         except:
             print("Не могу открыть какую-то таблицу")
             exit()
@@ -33,6 +33,13 @@ class Logbook:
         self.sn = self.__getInfo(self.ws1328, "Serial No. / Batch No.")
         self.timeDuration = self.__getInfo(self.ws1225, "Used MHR")
         self.ata = self.__getInfo(self.ws1328, "ATA Chapter")
+        self.crs = self.__getInfo(self.ws1498, "Insp. by")
+        self.serial1328 = self.__getInfo(self.ws1328, "Serial No. / Batch No.")
+        self.serial1498 = self.__getInfo(self.ws1498, "Serial/Batch No.")
+        self.part1328 = self.__getInfo(self.ws1328, "Part No.")
+        self.part1498 = self.__getInfo(self.ws1498, "Part No.")
+        self.date1498 = self.__getInfo(self.ws1498, "Insp. Date")
+
 
     def __getInfo(self, ws, info): # find column`s number in worksheet by info
         for i in range(ws.max_column):
@@ -55,6 +62,7 @@ class Logbook:
         row1328 = self.getRow1328(row1225[self.cmproject])
         usedTime = self.getTime(row1225[self.timeDuration])
         task = self.getTaskType(row1225[self.tow].value)
+        crs = self.getCRS(row1225, row1328)
         data = [
                 row1225[self.date].value.strftime('%d.%m.%y'),    # date
                 "ACCMS",    # location "ACCMS"
@@ -69,12 +77,12 @@ class Logbook:
                 task["mod"],    # task type: MOD
                 task["rep"],    # task type: REP
                 task["insp"],    # task type: INSP
-                    # type of activity: Training
+                "",    # type of activity: Training
                 "X",    # type of activity: Perform
-                    # type of activity: Suppervise
-                self.getCRS(row1225[self.cmproject].value),    # type of activity: CRS
+                "",    # type of activity: Suppervise
+                crs,    # type of activity: CRS
                 row1328[self.ata].value,    # ATA
-                    # Operation performed
+                self.getOperation(crs),    # Operation performed
                 usedTime,    # Time duration
                 row1225[self.cmproject].value,    # Maintenance record ref.(CM number)
                 "ToW is \"{}\"".format(row1225[self.tow].value)    # Remarks
@@ -116,8 +124,17 @@ class Logbook:
             "insp":"X",
         }
 
-    def getCRS(self, cm):
-        
+    def getCRS(self, row1225, row1328):
+        serial = row1328[self.serial1328].value
+        part = row1328[self.part1328].value
+        sbt=row1225[self.sbt].value
+        data = row1225[self.date].value
+        for rows in self.ws1498:
+            if rows[self.serial1498].value == serial:
+                if rows[self.part1498].value == part:
+                    if rows[self.date1498].value == data:
+                        if rows[self.crs].value == sbt:
+                            return "X"        
         return ""
 
 
@@ -125,4 +142,8 @@ class Logbook:
     def save(self):     # save logbook 
         self.wblb.save("Logbook.xlsx")
 
-
+    def getOperation(self, crs):
+        if crs == "X":
+            return "Maintenance, TBS, Repair, CRS"
+        else:
+            return "Maintenance, TBS, Repair"
