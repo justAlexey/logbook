@@ -2,3 +2,4 @@ Logbook.xlsx
 __pycache__/*
 venv/*
 ~$Logbook.xlsx
+excel/~$database.xlsx

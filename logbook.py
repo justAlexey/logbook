@@ -1,7 +1,7 @@
 import openpyxl as opxl
 from progress.bar import IncrementalBar
 import datetime
-import database
+#import database
 
 class Logbook:
 
@@ -9,16 +9,33 @@ class Logbook:
         # try to open 'APN'.xls
         try:
             self.wb1225 = opxl.open("excel/1225.xlsx")
+        except:
+            print("Не могу открыть таблицу 1225.xlsx")
+            exit()
+
+        try:
             self.wb1328 = opxl.open("excel/1328.xlsx")
+        except:
+            print("Не могу открыть таблицу 1328.xlsx")
+            exit()
+
+        try:
             self.wb1498 = opxl.open("excel/1498.xlsx")
         except:
-            print("Не могу открыть какую-то таблицу")
+            print("Не могу открыть таблицу 1498.xlsx")
+            exit()
+
+        try:
+            self.database = opxl.open("excel/database.xlsx")
+        except:
+            print("Не могу открыть базу")
             exit()
 
         # load worksheets
         self.ws1225 = self.wb1225.active
         self.ws1328 = self.wb1328.active
         self.ws1498 = self.wb1498.active
+        self.wsDatabase = self.database.active
         self.wblb = opxl.Workbook("Logbook.xlsx")
         self.wslb = self.wblb.active
 
@@ -63,11 +80,13 @@ class Logbook:
         usedTime = self.getTime(row1225[self.timeDuration])
         task = self.getTaskType(row1225[self.tow].value)
         crs = self.getCRS(row1225, row1328)
+        part = row1328[self.part1328].value
+        serial = row1328[self.serial1328].value
         data = [
                 row1225[self.date].value.strftime('%d.%m.%y'),    # date
                 "ACCMS",    # location "ACCMS"
-                row1328[self.description].value,    # Component type (description)
-                row1328[self.sn].value,    # Serial number
+                self.getDescription(part),    # Component type (description)
+                serial,    # Serial number
                 "C6 Equipment",    # Type of maintenance(raiting)
                 "trainee",    # Privelege
                 task["fot"],    # task type: FOT 
@@ -81,7 +100,7 @@ class Logbook:
                 "X",    # type of activity: Perform
                 "",    # type of activity: Suppervise
                 crs,    # type of activity: CRS
-                row1328[self.ata].value,    # ATA
+                self.getATA(part),    # ATA
                 self.getOperation(crs),    # Operation performed
                 usedTime,    # Time duration
                 row1225[self.cmproject].value,    # Maintenance record ref.(CM number)
@@ -147,3 +166,15 @@ class Logbook:
             return "Maintenance, TBS, Repair, CRS"
         else:
             return "Maintenance, TBS, Repair"
+
+
+    def getATA(self, pn):
+        for rows in self.wsDatabase:
+            if rows[0].value == pn:
+                return rows[2].value
+
+    
+    def getDescription(self, pn):
+        for rows in self.wsDatabase:
+            if rows[0].value == pn:
+                return rows[1]
