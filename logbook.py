@@ -1,7 +1,7 @@
 import openpyxl as opxl
 from progress.bar import IncrementalBar
 import datetime
-#import database
+import database
 
 class Logbook:
 
@@ -64,10 +64,20 @@ class Logbook:
                 return i
 
 
-    def clear(self, ws):    # clear worksheet from empty rows by 'A' column
-        clearing = IncrementalBar("Clearing...", max = ws.max_row-1)
+    def clear1328(self, ws):    # clear worksheet from empty rows by empty cm project
+        clearing = IncrementalBar("Clearing 1328...", max = ws.max_row-1)
         for i in range(ws.max_row,1,-1):
-            if ws[i][0].value == None:
+            if ws[i][self.cmproject1328].value == None:
+                ws.delete_rows(i)
+            clearing.next()
+        clearing.finish()
+        return ws
+
+
+    def clear1225(self, ws):    # clear worksheet from empty rows by type of work
+        clearing = IncrementalBar("Clearing 1225...", max = ws.max_row-1)
+        for i in range(ws.max_row,1,-1):
+            if ws[i][self.tow].value not in database.typeofwork:
                 ws.delete_rows(i)
             clearing.next()
         clearing.finish()
