@@ -12,12 +12,7 @@ lb = logbook.Logbook()
 # print("clear 1225")
 dif = time.monotonic()
 lb.ws1225 = lb.clear1225(lb.ws1225)
-<<<<<<< HEAD
-#lb.ws1328 = lb.clear1328(lb.ws1328)
-=======
 lb.ws1328 = lb.clear1328(lb.ws1328)
->>>>>>> origin/main
-
 print("cleared")
 progress = IncrementalBar("create logbook...", max = lb.ws1225.max_row-2)
 
