@@ -131,10 +131,20 @@ class Logbook:
 
 
     def getRow1328(self, cm):       # get row from 1328 apn by CM project
-        for row in self.ws1328:
-            if cm.value in row[self.cmproject1328].value:
-                return row
-
+        low = 0
+        high = self.ws1328.max_row
+        while low < high:
+            midle = (low+high)/2
+            midle =  int(midle)
+            row1328 = self.ws1328[midle]
+            print(f'low = {low}, high = {high}, max row = {self.ws1328.max_row}midle = {midle}, cm = {cm.value}, row cm = {row1328[self.cmproject1328].value}')
+            if cm.value == row1328[self.cmproject1328].value:
+                return row1328
+            elif cm.value > row1328[self.cmproject1328].value:
+                low = midle+1
+            elif cm.value < row1328[self.cmproject1328].value:
+                high = midle
+        return -1
 
     def getTime(self, time):        # get time by delta seconds
         hours, remainder = divmod(time.value.seconds, 3600)
