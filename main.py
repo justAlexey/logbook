@@ -9,7 +9,7 @@ import database
 print("start")
 #s = time.monotonic()
 lb = logbook.Logbook()
-# print("clear 1225")
+print("clear 1225")
 #dif = time.monotonic()
 #lb.ws1225 = lb.clear1225(lb.ws1225)
 #lb.ws1328 = lb.clear1328(lb.ws1328)
